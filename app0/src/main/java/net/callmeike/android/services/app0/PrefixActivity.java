@@ -84,7 +84,6 @@ public class PrefixActivity extends BaseActivity implements ServiceConnection {
         if (svc1 == null) {
             return;
         }
-
         output.setText(String.valueOf(svc1.prefix(input.getText().toString())));
     }
 }

@@ -75,11 +75,12 @@ public class MainActivity extends AppCompatActivity implements ServiceConnection
         onServiceDisconnected(null);
     }
 
+    Intent svc;
     @Override
     protected void onStart() {
         super.onStart();
 
-        Intent svc = new Intent();
+        svc = new Intent();
         svc.setComponent(new ComponentName(Contract.SLOW_SERVICE_PACKAGE, Contract.SLOW_SERVICE_CLASS));
         bindService(svc, this, Context.BIND_AUTO_CREATE);
     }
@@ -94,5 +95,7 @@ public class MainActivity extends AppCompatActivity implements ServiceConnection
         } catch (RemoteException e) {
             Log.e(TAG, "remote exception: ", e);
         }
+        this.stopService(svc);
+
     }
 }
