@@ -18,6 +18,7 @@ package net.callmeike.android.services.app0;
 import android.app.Service;
 import android.content.Context;
 import android.content.Intent;
+import android.os.AsyncTask;
 import android.os.IBinder;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -46,19 +47,54 @@ public class CookieService extends Service {
 
     @Override
     public int onStartCommand(@Nullable Intent intent, int flags, int startId) {
-        String action = intent.getAction();
-        switch (action) {
-            case ACTION_EAT:
-                doEatACookie(intent.getStringExtra(PARAM_COOKIE));
-                break;
-            default:
-                Log.w(TAG, "unexpected action: " + action);
-        }
-
+         new EatCookiesTask().execute(intent);
         return Service.START_NOT_STICKY;
     }
 
     private void doEatACookie(String cookie) {
         Log.w(TAG, "munch, munch, munch: " + cookie);
     }
+
+    void processIntent(Intent intent)
+    {
+        switch (intent.getAction()) {
+            case ACTION_EAT:
+                doEatACookie(intent.getStringExtra(PARAM_COOKIE));
+                break;
+            default:
+                Log.w(TAG, "unexpected action: " + intent.getAction());
+        }
+    }
+
+    private void stop()
+    {
+        CookieService.this.stopSelf();
+    }
+
+    class EatCookiesTask extends AsyncTask<Intent, Void, Void>
+    {
+        @Override
+        protected Void doInBackground(Intent... intents) {
+            processIntent(intents[0]);
+            return null;
+        }
+
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+        }
+
+        @Override
+        protected void onPostExecute(Void aVoid) {
+            super.onPostExecute(aVoid);
+            stop();
+        }
+
+        @Override
+        protected void onCancelled(Void aVoid) {
+            super.onCancelled(aVoid);
+            stop();
+        }
+    }
+
 }
