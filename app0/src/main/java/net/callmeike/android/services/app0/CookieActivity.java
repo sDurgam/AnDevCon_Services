@@ -51,7 +51,7 @@ public class CookieActivity extends BaseActivity {
 
     void eatACookie() {
         String cookie = input.getText().toString();
-        CookieService.eatACookie(this, cookie);
+        Contract.eatACookie(this, cookie);
         output.setText("I probably ate it a " + cookie);
     }
 }

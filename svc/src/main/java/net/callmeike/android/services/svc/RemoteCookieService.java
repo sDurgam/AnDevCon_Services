@@ -36,6 +36,19 @@ import net.callmeike.android.services.common.Contract;
 public class RemoteCookieService extends Service {
     private static final String TAG = "REMCOOKIESVC";
 
+
+    @Override
+    public void onCreate() {
+        super.onCreate();
+        Contract.startPeriodicLogger(TAG, ((int)(System.currentTimeMillis()/1000)));
+    }
+
+    @Override
+    public void onDestroy() {
+        Contract.stopPeriodicLogger();
+        super.onDestroy();
+    }
+
     @Nullable
     @Override
     public IBinder onBind(Intent intent) {

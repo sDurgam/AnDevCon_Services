@@ -18,8 +18,12 @@ package net.callmeike.android.services.common;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
+import android.content.PeriodicSync;
 import android.os.Messenger;
+import android.os.SystemClock;
 import android.support.annotation.NonNull;
+
+import net.callmeike.android.services.common.util.ProcessStats;
 
 public class Contract {
     private Contract() {
@@ -51,6 +55,25 @@ public class Contract {
         = "net.callmeike.android.services.app2.RelayService";
 
     public static final int REQUEST_CONNECTION = 8954;
+
+    static ProcessStats pStats;
+
+    public static void startPeriodicLogger(String tag, int secs)
+    {
+        if(pStats == null)
+        {
+            pStats = new ProcessStats(tag);
+        }
+        pStats.startPeriodicLogger(secs);
+    }
+
+    public static void stopPeriodicLogger()
+    {
+        if(pStats != null) {
+            pStats.stopPeriodicLogger();
+        }
+    }
+
 
     public static void eatACookie(@NonNull Context ctxt, @NonNull String cookie) {
         Intent intent = new Intent();
